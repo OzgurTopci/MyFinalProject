@@ -11,12 +11,49 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        [HttpGet]
-        public List<Product> Get()
+        //Lose coupled
+        //naming convention
+        //IoS Container -- Inversion of Control
+        IProductService _productService;
+
+        public ProductsController(IProductService productService)
         {
-           IProductService productService = new ProductManager(new EfProductDal());
-           var result =productService.GetALL();
-           return result.Data;
+            _productService = productService;
+        }
+
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+           //Swagger
+           //Dependency chain --
+           var result = _productService.GetALL();
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+           return BadRequest(result);
+        }
+
+        [HttpGet("getbyid")]
+        public IActionResult GetByİd(int id)
+        {
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("add")]
+        public IActionResult Add(Product product)
+        {
+            var result = _productService.Add(product);
+            if(result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }
