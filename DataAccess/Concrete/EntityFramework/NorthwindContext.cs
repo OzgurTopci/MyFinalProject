@@ -1,5 +1,6 @@
 ﻿using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Northwind;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-8TFFC0A\SQLEXPRESS01;Database=MyProjectDB;Trusted_Connection=true");
         }
+       
         public DbSet<Product>Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Customer> Customers { get; set; }

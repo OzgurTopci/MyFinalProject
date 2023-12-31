@@ -1,5 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Business.Abstarct;
 using Business.Concrete;
+using Business.DependencyReslovers.Autofac;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +19,12 @@ builder.Services.AddSwaggerGen();
 
 //Autofac, Ninject, CastleWindsor, StructreMap, Light›nject, Dry›nject
 //AOP
-builder.Services.AddSingleton<IProductService, ProductManager>();
-builder.Services.AddSingleton<IProductDal, EfProductDal>();
+//builder.Services.AddSingleton<IProductService, ProductManager>();
+//builder.Services.AddSingleton<IProductDal, EfProductDal>();
 //builder.Services.AddDbContext<DbContext>(options =>  options.UseSqlServer(,  sqlServerOptions => sqlServerOptions.EnableRetryOnFailure()));
+
+//Kendi olu˛turdugumuz Autofacle konfigure etme yeri
+builder.Host.UseServiceProviderFactory(services => new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder => { builder.RegisterModule(new AuotfacBusinessModule()); });
 
 var app = builder.Build();
 
